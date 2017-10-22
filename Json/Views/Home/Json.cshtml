@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Json";
+}
+
+<h2>Json</h2>
+
+<h1 style="text-align-last: center;">Chuck Noris</h1>
+<ol id="myList"></ol>
+
+<script type="text/javascript">
+
+	var getJSON = function(url, callback) {
+		var xhr = new XMLHttpRequest();
+			xhr.open('get', url, true);
+			xhr.responseType = 'json';
+
+		xhr.onload = function() {
+
+			var status = xhr.status;
+
+			  if (status == 200) {
+			    callback(null, xhr.response);
+			  } else {
+			    callback(status);
+		  	  }
+		};
+
+		xhr.send();
+	};
+
+	// And you would call it like this:
+	getJSON("@Url.Action("getModel", "Home")", function(err, data){
+
+        if (err != null) {
+            console.log('Something went wrong: ' + err);
+        } else {
+            console.log('Your Json result is:  ' + data);
+            for(let i = 0; i < data.value.length; i++){
+                console.log(i, data.value[i].joke);
+                var h = document.createElement("LI");
+                var t = document.createTextNode(data.value[i].joke);
+                h.appendChild(t);
+                document.getElementById("myList").appendChild(h);
+            }
+        }
+
+    });
+
+</script>
